@@ -138,7 +138,6 @@ public class BigNumber {
     public BigNumber minus(BigNumber other) {
         int[] grater;
         int[] lower;
-
         this.reversePadding();
         other.reversePadding();
         BigNumber result = new BigNumber();
@@ -152,15 +151,14 @@ public class BigNumber {
             return second.sum(first);
 
         } else {
-            if(this.firstIsGrater(other)){
-                if(this.numberOfDigits != other.numberOfDigits)
+            if (this.firstIsGrater(other)) {
+                if (this.numberOfDigits != other.numberOfDigits)
                     other.padding(this.numberOfDigits - other.numberOfDigits);
                 result.sign = this.sign;
                 grater = this.Digits;
                 lower = other.Digits;
-            }
-            else {
-                if(this.numberOfDigits != other.numberOfDigits)
+            } else {
+                if (this.numberOfDigits != other.numberOfDigits)
                     this.padding(other.numberOfDigits - this.numberOfDigits);
                 result.sign = this.sign;
                 result.swapSign();
@@ -187,51 +185,6 @@ public class BigNumber {
         if (this.sign == '+') this.sign = '-';
         else this.sign = '+';
     }
-
-
-    public static void main(String[] args) {
-        BigNumber t = new BigNumber();
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("enter B1 :");
-        String first_str = scanner.nextLine();
-        BigNumber first = new BigNumber(first_str);
-        System.out.println("enter B2 (second big number):");
-        String second_str = scanner.nextLine();
-        BigNumber second = new BigNumber(second_str);
-        System.out.print("\nB1+B2 =");
-        first.sum(second).print();
-        System.out.print("\nB1-B2 =");
-        first.minus(second).print();
-        System.out.print("\nB2-B1 =");
-        second.minus(first).print();
-        System.out.println("\nenter the number n for >>n and <<n :");
-        int n = scanner.nextInt();
-        System.out.print("\nB2>>" + n + "(right shift) =");
-        second.shiftR(n).print();
-        System.out.print("\nB2<<n" + n + "(left shift) =");
-        second.shiftL(n).print();
-        System.out.println();
-        System.out.print("B1/B2 = ");
-        first.div(second).print();
-        System.out.println();
-        System.out.print("B1*B2 (karatsuba) = ");
-        first.multKaratsuba(second).print();
-        System.out.println();
-        System.out.print("B1*B2             = ");
-        first.mult(second).print();
-        System.out.println();
-        System.out.print("B1^3  = ");
-        first.pow(3).print();
-        System.out.println();
-        System.out.print("enter B3 (for factorial):");
-        int b3 =  scanner.nextInt();
-        BigNumber third = new BigNumber();
-        System.out.print("B3! = ");
-        third.big_factoriel(b3).print();
-        System.out.println();
-
-    }
-
 
     public BigNumber multByOneDigit(int d) {
 
@@ -273,7 +226,7 @@ public class BigNumber {
             result = result.mult(this);
         }
         if (n % 2 == 0) result.sign = '+';
-        else if (this.sign == '-' && n % 2 != 0) result.sign = '-';
+        else if (this.sign == '-') result.sign = '-';
         return result;
     }
 
@@ -399,5 +352,47 @@ public class BigNumber {
             result = result.mult(new BigNumber(i));
         }
         return result;
+    }
+
+    public static void main(String[] args) {
+        BigNumber t = new BigNumber();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("enter B1 :");
+        String first_str = scanner.nextLine();
+        BigNumber first = new BigNumber(first_str);
+        System.out.println("enter B2 (second big number):");
+        String second_str = scanner.nextLine();
+        BigNumber second = new BigNumber(second_str);
+        System.out.print("\nB1+B2 =");
+        first.sum(second).print();
+        System.out.print("\nB1-B2 =");
+        first.minus(second).print();
+        System.out.print("\nB2-B1 =");
+        second.minus(first).print();
+        System.out.println("\nenter the number n for >>n and <<n :");
+        int n = scanner.nextInt();
+        System.out.print("\nB2>>" + n + "(right shift) =");
+        second.shiftR(n).print();
+        System.out.print("\nB2<<n" + n + "(left shift) =");
+        second.shiftL(n).print();
+        System.out.println();
+        System.out.print("B1/B2 = ");
+        first.div(second).print();
+        System.out.println();
+        System.out.print("B1*B2 (karatsuba) = ");
+        first.multKaratsuba(second).print();
+        System.out.println();
+        System.out.print("B1*B2             = ");
+        first.mult(second).print();
+        System.out.println();
+        System.out.print("B1^3  = ");
+        first.pow(3).print();
+        System.out.println();
+        System.out.print("enter B3 (for factorial):");
+        int b3 = scanner.nextInt();
+        BigNumber third = new BigNumber();
+        System.out.print("B3! = ");
+        third.big_factoriel(b3).print();
+        System.out.println();
     }
 }
