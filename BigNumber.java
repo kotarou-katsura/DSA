@@ -151,14 +151,15 @@ public class BigNumber {
             return second.sum(first);
 
         } else {
-            if (this.firstIsGrater(other)) {
-                if (this.numberOfDigits != other.numberOfDigits)
+            if(this.firstIsGrater(other)){
+                if(this.numberOfDigits != other.numberOfDigits)
                     other.padding(this.numberOfDigits - other.numberOfDigits);
                 result.sign = this.sign;
                 grater = this.Digits;
                 lower = other.Digits;
-            } else {
-                if (this.numberOfDigits != other.numberOfDigits)
+            }
+            else {
+                if(this.numberOfDigits != other.numberOfDigits)
                     this.padding(other.numberOfDigits - this.numberOfDigits);
                 result.sign = this.sign;
                 result.swapSign();
@@ -222,11 +223,26 @@ public class BigNumber {
     public BigNumber pow(int n) {
         this.reversePadding();
         BigNumber result = new BigNumber(1);
-        for (int i = 0; i < n; i++) {
-            result = result.mult(this);
+        char signr;
+        if (n % 2 == 0) signr = '+';
+        else if (this.sign == '-' ) signr = '-';
+        else signr = '+';
+        BigNumber current=new BigNumber();
+        current.copyBigNumber(this);
+        for (int i = 2; i <= n; i++) {
+           if (n%i ==0) {
+               for (int j = 0; j < i; j++)
+                   result = result.mult(current);
+               n /= i;
+               i=1;
+               current.copyBigNumber(result);
+               result = new BigNumber(1);
+           }
+            if (n == 1)
+                break;
         }
-        if (n % 2 == 0) result.sign = '+';
-        else if (this.sign == '-') result.sign = '-';
+        result.copyBigNumber(current);
+        result.sign=signr;
         return result;
     }
 
@@ -252,7 +268,12 @@ public class BigNumber {
             BigNumber num1_lastHalf = new BigNumber(this.converToString().substring(firstHalf));
             BigNumber num2_firstHalf = new BigNumber(other.converToString().substring(0, firstHalf));
             BigNumber num2_lastHalf = new BigNumber(other.converToString().substring(firstHalf));
-            return (num1_firstHalf.multKaratsuba(num2_firstHalf).shiftL(firstHalf * 2).sum(num1_lastHalf.multKaratsuba(num2_lastHalf))).sum(num1_firstHalf.multKaratsuba(num2_lastHalf).shiftL((firstHalf)).sum(num1_lastHalf.multKaratsuba(num2_firstHalf).shiftL((firstHalf))));
+            result.copyBigNumber((num1_firstHalf.multKaratsuba(num2_firstHalf).shiftL(firstHalf * 2).sum(num1_lastHalf.multKaratsuba(num2_lastHalf))).sum(num1_firstHalf.multKaratsuba(num2_lastHalf).shiftL((firstHalf)).sum(num1_lastHalf.multKaratsuba(num2_firstHalf).shiftL((firstHalf)))));
+            if (this.sign == '-' && other.sign == '-') result.sign = '+';
+            else if ((other.sign == '-' && this.sign == '+') || (other.sign == '+' && this.sign == '-'))
+                result.sign = '-';
+            else result.sign = '+';
+            return result;
         }
     }
 
@@ -293,7 +314,7 @@ public class BigNumber {
         BigNumber result = new BigNumber();
         if (this.numberOfDigits < other.numberOfDigits) return new BigNumber(0);
         else {
-            boolean firstTime = true;
+//            boolean firstTime = true;
             result.numberOfDigits = this.numberOfDigits - other.numberOfDigits;
             BigNumber b1 = new BigNumber();
             b1.copyBigNumber(this);
@@ -333,7 +354,6 @@ public class BigNumber {
                     dif1 = b1.numberOfDigits;
                     b1.copyBigNumber(b1.minus(other.multByOneDigit(j).shiftL(b1.numberOfDigits - other.numberOfDigits)));
                     dif2 = b1.numberOfDigits;
-
                 }
             }
             other.sign = b2_sign;
@@ -385,14 +405,19 @@ public class BigNumber {
         System.out.print("B1*B2             = ");
         first.mult(second).print();
         System.out.println();
-        System.out.print("B1^3  = ");
-        first.pow(3).print();
+        System.out.println("\nenter power number(m):");
+        int m = scanner.nextInt();
+        System.out.print("B1^m  = ");
+        first.pow(m).print();
         System.out.println();
         System.out.print("enter B3 (for factorial):");
-        int b3 = scanner.nextInt();
+        int b3 =  scanner.nextInt();
         BigNumber third = new BigNumber();
         System.out.print("B3! = ");
         third.big_factoriel(b3).print();
         System.out.println();
+
     }
+
+
 }
