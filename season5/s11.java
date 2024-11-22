@@ -17,7 +17,15 @@ public class s11 {
         while (!s1.isEmpty()){
             s2.push(s1.pop());
         }
-      return   s2.pop();
+        s1.addAll(s2);
+        s2.clear();
+        int temp = s1.pop();
+        while (!s1.isEmpty()){
+            s2.push(s1.pop());
+        }
+        s1.addAll(s2);
+        s2.clear();
+      return   temp;
     }
 
     public static void main(String[] args) {
@@ -30,7 +38,10 @@ public class s11 {
         System.out.println(queue.dequeue());
         System.out.println(queue.dequeue());
         System.out.println(queue.dequeue());
+        queue.enqueue(100);
         System.out.println(queue.dequeue());
+        System.out.println(queue.dequeue());
+
 
     }
 }
