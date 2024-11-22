@@ -36,6 +36,9 @@ public class s12 {
         stack.push(3);
         System.out.println(stack.pop());
         System.out.println(stack.pop());
+        stack.push(100);
         System.out.println(stack.pop());
+        System.out.println(stack.pop());
+
     }
 }
